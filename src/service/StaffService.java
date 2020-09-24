@@ -18,6 +18,10 @@ public class StaffService {
 		staffRepository.addStaff(staff);
 	}
 
+	public List<Staff> getAllStaff(){
+		return staffRepository.getAllStaff();
+	}
+	
 	public void updateStaff(Staff staff) {
 		if (staffRepository.getStaffById(staff.getStaffId()) != null) {
 			staffRepository.updateStaff(staff);
@@ -34,8 +38,11 @@ public class StaffService {
 		}
 	}
 	
-	public List<Staff> getAllStaff(){
-		return staffRepository.getAllStaff();
+	public Staff getStaffById(int staffId) {
+		Staff staff = staffRepository.getStaffById(staffId);
+		if(staff == null) {
+			throw new CustomException(ErrorMessage.MEMBER_DOES_NOT_EXIST.getErrorMessage());
+		}
+		return staff;
 	}
-
 }

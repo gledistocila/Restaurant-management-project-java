@@ -10,7 +10,7 @@ import service.MemberService;
 
 public class MemberView {
 
-	public void memberMenu() {
+	public void memberMenu(Member member) {
 		
 	}
 	

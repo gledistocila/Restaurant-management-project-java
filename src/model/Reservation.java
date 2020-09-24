@@ -39,7 +39,8 @@ public class Reservation {
 		this.tableId = tableId;
 		this.reservationDate = reservationDate;
 	}
-       
-       
-	
+    public Reservation() {
+    	
+    }
+
 }

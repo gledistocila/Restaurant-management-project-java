@@ -6,6 +6,7 @@ import java.util.Scanner;
 import exceptions.CustomException;
 import model.Restaurant;
 import model.Staff;
+import model.Admin;
 import model.Member;
 import service.MemberService;
 import service.StaffService;
@@ -16,17 +17,12 @@ public class AdminView {
 	MemberService memberService = new MemberService();
 	StaffService staffService = new StaffService();
 	
-	public void adminMenu() {
-		String username = "gledis";
-		String password = "gledis";
-		System.out.println("Username: \n");
-		Scanner input = new Scanner(System.in);
-		if(input.nextLine().equals(username)) {
-			System.out.println("Password: \n");
-			if(input.nextLine().equals(password)) {
-				updateMember();
-			}
-		}
+	public void adminMenu(Admin admin) {
+		
+		System.out.println("Mireseerdhet ! ");
+		listMembers();
+		
+		
 	}
 	
 	public void addMember() {
@@ -55,11 +51,18 @@ public class AdminView {
 			new WelcomeView().welcomeStart();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
+			new WelcomeView().welcomeStart();
 		} finally {
 			input.close();
 		}
 		
      }
+	
+	public void listMembers() {
+		System.out.println("Listimi i anetareve: \n");
+		
+		System.out.println(memberService.getAllMembers());
+	}
 	
 	public void updateMember() {
 		System.out.println("Ju lutem jepni ID e anetarit qe doni te updatoni: ");
@@ -77,6 +80,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			new WelcomeView().welcomeStart();
 		}
 		finally {
 			input.close();
@@ -97,6 +101,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			new WelcomeView().welcomeStart();
 		}
 		finally {
 			input.close();
@@ -125,11 +130,17 @@ public class AdminView {
 			new WelcomeView().welcomeStart();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
+			new WelcomeView().welcomeStart();
 		} finally {
 			input.close();
 		}
 		
      }
+	
+	public void listStaff() {
+		System.out.println("Listimi i stafit: \n");
+		System.out.println(staffService.getAllStaff());
+	}
 	
 	public void updateStaff() {
 		System.out.println("Ju lutem jepni ID e punonjesit qe doni te updatoni: ");
@@ -147,6 +158,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			new WelcomeView().welcomeStart();
 		}
 		finally {
 			input.close();
@@ -166,10 +178,10 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			new WelcomeView().welcomeStart();
 		}
 		finally {
 			input.close();
 		}
-	}
-	
+	}	
 }

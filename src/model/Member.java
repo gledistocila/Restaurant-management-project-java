@@ -51,6 +51,7 @@ public class Member {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
+	
 	public Member(int memberId, String firstName, String lastName, String email, String password, String question,
 			String answer) {
 		super();
@@ -63,8 +64,8 @@ public class Member {
 		this.answer = answer;
 	}
        
-     public Member() {  
+    public Member() {  
     	 
-     }
+    }
 	
 }

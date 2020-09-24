@@ -37,6 +37,26 @@ public class StaffRepository {
 			System.out.println("error " + e);
 		}
 	}
+	
+	public List<Staff> getAllStaff() {
+		List<Staff> allStaff = new ArrayList<>();
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STAFF);) {
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				Staff staff = new Staff();
+				staff.setStaffId(rs.getInt("staff_id"));
+				staff.setFirstName(rs.getString("first_name"));
+				staff.setLastName(rs.getString("last_name"));
+				allStaff.add(staff);
+			}
+			return allStaff;
+		} catch (SQLException e) {
+			System.out.println("error " + e);
+			return null;
+		}
+	}
 
 	public void updateStaff(Staff staff) {
 		try (Connection connection = ConnectionManager.getConnection();
@@ -59,27 +79,6 @@ public class StaffRepository {
 			System.out.println("Number of records affected :: " + result);
 		} catch (SQLException e) {
 			System.out.println("error " + e);
-		}
-	}
-
-	
-	public List<Staff> getAllStaff() {
-		List<Staff> allStaff = new ArrayList<>();
-		try (Connection connection = ConnectionManager.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_STAFF);) {
-			ResultSet rs = preparedStatement.executeQuery();
-
-			while (rs.next()) {
-				Staff staff = new Staff();
-				staff.setStaffId(rs.getInt("staff_id"));
-				staff.setFirstName(rs.getString("first_name"));
-				staff.setLastName(rs.getString("last_name"));
-				allStaff.add(staff);
-			}
-			return allStaff;
-		} catch (SQLException e) {
-			System.out.println("error " + e);
-			return null;
 		}
 	}
 

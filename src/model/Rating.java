@@ -1,6 +1,7 @@
 package model;
 
 public class Rating {
+	
        private int rateId;
        private String rateName;
        private int memberId;
@@ -30,6 +31,7 @@ public class Rating {
 	public void setFoodId(int foodId) {
 		this.foodId = foodId;
 	}
+	
 	public Rating(int rateId, String rateName, int memberId, int foodId) {
 		super();
 		this.rateId = rateId;
@@ -38,6 +40,8 @@ public class Rating {
 		this.foodId = foodId;
 	}
        
-       
+    public Rating() {
+    	
+    }
 	
 }

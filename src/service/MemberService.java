@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.CustomException;
+import model.Admin;
 import model.Member;
 import model.Restaurant;
 import model.Staff;
@@ -17,6 +18,10 @@ public class MemberService {
 		memberRepository.addMember(member);
 	}
 
+	public List<Member> getAllMembers(){
+		return memberRepository.getAllMembers();
+	}
+	
 	public void updateMember(Member member) {
 		if (memberRepository.getMemberById(member.getMemberId()) != null) {
 			memberRepository.updateMember(member);
@@ -33,8 +38,15 @@ public class MemberService {
 		}
 	}
 	
-	public List<Member> getAllMembers(){
-		return memberRepository.getAllMembers();
-	}
-
+	
+	
+	public Member getMemberById(int memberId) {
+		Member member = memberRepository.getMemberById(memberId);
+		if(member == null) {
+			throw new CustomException(ErrorMessage.MEMBER_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			  return member;
+	        }
+    }
 }
