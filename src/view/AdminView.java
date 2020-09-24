@@ -1,11 +1,14 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import exceptions.CustomException;
 import model.Restaurant;
 import model.Staff;
+import repository.MemberRepository;
 import model.Admin;
 import model.Member;
 import service.MemberService;
@@ -17,11 +20,9 @@ public class AdminView {
 	MemberService memberService = new MemberService();
 	StaffService staffService = new StaffService();
 	
-	public void adminMenu(Admin admin) {
+	public void adminMenu() {
 		
-		System.out.println("Mireseerdhet ! ");
 		listMembers();
-		
 		
 	}
 	
@@ -51,7 +52,7 @@ public class AdminView {
 			new WelcomeView().welcomeStart();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
-			new WelcomeView().welcomeStart();
+			
 		} finally {
 			input.close();
 		}
@@ -59,9 +60,15 @@ public class AdminView {
      }
 	
 	public void listMembers() {
-		System.out.println("Listimi i anetareve: \n");
 		
-		System.out.println(memberService.getAllMembers());
+		System.out.println("Lista e anetareve: \n");	
+				
+		List<Member> members = memberService.getAllMembers();
+		
+		for(Member m : members) {
+			System.out.println("Id e anetarit: " +m.getMemberId()+ " || Emri i anetarit: " +m.getFirstName()+ " || Mbiemri i anetarit: " +m.getLastName()+ " || Pyetja e sigurise: " +m.getQuestion()+ " || Pergjigjja: " +m.getAnswer()+ " . ");
+		}
+				
 	}
 	
 	public void updateMember() {
@@ -80,7 +87,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
-			new WelcomeView().welcomeStart();
+			
 		}
 		finally {
 			input.close();
@@ -101,7 +108,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
-			new WelcomeView().welcomeStart();
+			
 		}
 		finally {
 			input.close();
@@ -130,7 +137,7 @@ public class AdminView {
 			new WelcomeView().welcomeStart();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
-			new WelcomeView().welcomeStart();
+			
 		} finally {
 			input.close();
 		}
@@ -138,8 +145,9 @@ public class AdminView {
      }
 	
 	public void listStaff() {
+		
 		System.out.println("Listimi i stafit: \n");
-		System.out.println(staffService.getAllStaff());
+
 	}
 	
 	public void updateStaff() {
@@ -158,7 +166,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
-			new WelcomeView().welcomeStart();
+			
 		}
 		finally {
 			input.close();
@@ -178,7 +186,7 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
-			new WelcomeView().welcomeStart();
+			
 		}
 		finally {
 			input.close();

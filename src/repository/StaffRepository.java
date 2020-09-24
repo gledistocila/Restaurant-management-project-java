@@ -18,7 +18,7 @@ public class StaffRepository {
 	private final String ADD_STAFF = "INSERT INTO staff(first_name , last_name , street_address , mobile_no) VALUES (?,?,?,?)";
 	private final String UPDATE_STAFF = "UPDATE staff SET first_name = ? where staff_id = ?";
 	private final String DELETE_STAFF = "DELETE FROM staff where staff_id = ?";
-	private final String GET_ALL_STAFF = "SELECT * FROM staff where staff_id= ?";
+	private final String GET_ALL_STAFF = "SELECT * FROM staff";
 	private final String GET_STAFF_BY_ID = "SELECT * FROM staff where staff_id = ?";
 
 
@@ -49,6 +49,8 @@ public class StaffRepository {
 				staff.setStaffId(rs.getInt("staff_id"));
 				staff.setFirstName(rs.getString("first_name"));
 				staff.setLastName(rs.getString("last_name"));
+				staff.setStreetAddress(rs.getString("street_address"));
+				staff.setMobileNo(rs.getString("mobile_no"));
 				allStaff.add(staff);
 			}
 			return allStaff;
