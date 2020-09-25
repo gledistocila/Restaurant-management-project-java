@@ -8,6 +8,8 @@ public enum ErrorMessage {
     STAFF_EXISTS("Staff qe doni te shtoni ekziston. "),
     STAFF_DOES_NOT_EXIST("Staff qe doni te fshini nuk ekziston. "),
     CATEGORY_DOES_NOT_EXIST("Kategoria nuk ekziston. "),
+    RATING_DOES_NOT_EXIST("Rating nuk ekziston. "),
+    FOOD_DOES_NOT_EXIST("Ushqimi nuk ekziston. "),
 	ADMIN_DOES_NOT_EXIST("Te dhenat e administratorit nuk jane te sakta. ");
 	
 	private String errorMessage;

@@ -8,6 +8,7 @@ import model.Admin;
 import model.Category;
 import model.Food;
 import model.Member;
+import model.Rating;
 import model.Restaurant;
 import model.Staff;
 import repository.MemberRepository;
@@ -20,12 +21,19 @@ public class MemberService {
 		memberRepository.addMember(member);
 	}
 
+	public void addRating(Rating rating) {
+		memberRepository.addRating(rating);
+	}
 	public List<Member> getAllMembers(){
 		return memberRepository.getAllMembers();
 	}
 	
 	public List<Food> getAllFood(){
 		return memberRepository.getAllFood();
+	}
+	
+	public List<Rating> getAllRatings(){
+		return memberRepository.getAllRatings();
 	}
 	
 	public void updateMember(Member member) {
@@ -52,6 +60,14 @@ public class MemberService {
 		}
 	}
 	
+	public void deleteRating(Rating rating) {
+		if (memberRepository.getRatingById(rating.getRateId()) != null) {
+			memberRepository.deleteRating(rating.getRateId());			
+		} else {
+			throw new CustomException(ErrorMessage.MEMBER_DOES_NOT_EXIST.getErrorMessage());
+		}
+	}
+		
 	public Member getMemberById(int memberId) {
 		Member member = memberRepository.getMemberById(memberId);
 		if(member == null) {
@@ -59,6 +75,16 @@ public class MemberService {
 		}
 		else{
 			  return member;
+	        }
+    }
+	
+	public Food getFoodById(int foodId) {
+		Food food = memberRepository.getFoodById(foodId);
+		if(food == null) {
+			throw new CustomException(ErrorMessage.FOOD_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			  return food;
 	        }
     }
 	
@@ -79,6 +105,26 @@ public class MemberService {
 		}
 		else{
 			  return category;
+	        }
+    }
+	
+	public Rating getRatingById(int ratingId) {
+		Rating rating = memberRepository.getRatingById(ratingId);
+		if(rating == null) {
+			throw new CustomException(ErrorMessage.RATING_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			  return rating;
+	        }
+    }
+	
+	public Rating getRatingByName(String ratingName) {
+		Rating rating = memberRepository.getRatingByName(ratingName);
+		if(rating == null) {
+			throw new CustomException(ErrorMessage.RATING_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			  return rating;
 	        }
     }
 }

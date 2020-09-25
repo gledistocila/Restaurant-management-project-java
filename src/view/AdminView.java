@@ -11,6 +11,7 @@ import model.Staff;
 import repository.MemberRepository;
 import model.Admin;
 import model.Member;
+import model.Rating;
 import service.MemberService;
 import service.StaffService;
 import view.WelcomeView;
@@ -22,10 +23,25 @@ public class AdminView {
 	
 	public void adminMenu() {
 		
-		listMembers();
+		listRatings();
+		deleteRatingByName("Shkelqyeshem");
+		listRatings();
+		
 		
 	}
 	
+public void listRatings() {
+		
+		System.out.println("Lista e ratings: \n");	
+				
+		List<Rating> ratingsList = memberService.getAllRatings();
+		
+		for(Rating rating : ratingsList) {
+			System.out.println("Id e rating: " +rating.getRateId()+ ") || Ushqimi: "+memberService.getFoodById(rating.getFoodId()).getFoodName()+ " || Vleresimi: " +rating.getRateName()+ " i bere nga klienti me ID: " +rating.getMemberId()+ " i quajtur" +memberService.getMemberById(rating.getMemberId()).getFirstName()+ " . ");
+				
+	}
+  }
+
 	public void addMember() {
 		System.out.println("Ju lutem jepni te dhenat e anetarit qe doni te shtoni: \n");
 		Scanner input = new Scanner(System.in);
@@ -96,7 +112,7 @@ public class AdminView {
 	}
 	
 	public void deleteMember() {
-		System.out.println("Ju lutem jepni ID e anetarit qe doni te fshini: ");
+		System.out.println("Ju lutem jepni ID e anetarit qe doni te fshini: \n");
 		Scanner input = new Scanner(System.in);
 		
 		try {
@@ -112,6 +128,68 @@ public class AdminView {
 		}
 		finally {
 			input.close();
+		}
+	}
+	
+	public void deleteRating() {
+		System.out.println("Ju lutem jepni ID e rating qe doni te fshini: \n");
+		Scanner input = new Scanner(System.in);
+		
+		try {
+			Rating rating = new Rating();
+			rating.setRateId(input.nextInt());
+			memberService.deleteRating(rating);
+			System.out.println("Rating u fshi me sukses!");
+			new WelcomeView().welcomeStart();
+		}
+		catch(CustomException exception) {
+			System.out.println(exception.getMessage());
+		}
+		finally {
+			input.close();
+		}
+	}
+	
+	public void deleteRatingByName(String ratingName) {
+		
+	  try{
+			List<Rating> allRatings = memberService.getAllRatings();
+		    List<Rating> newRatings = new ArrayList<>();
+		
+		    for(Rating rating:allRatings) {
+			                               if(rating.getRateName().equals(ratingName)) {
+				                           newRatings.add(rating);
+			}
+		}
+		
+		for(Rating rating:newRatings) {
+			memberService.deleteRating(rating);
+		}
+	 }
+	catch(CustomException exception) {
+			System.out.println(exception.getMessage());
+	 }
+		
+	}
+	
+	public void deleteRatingByMember(Integer memberId) {
+		try {
+			  List<Rating> allRatings = memberService.getAllRatings();
+			  List<Rating> memberRatings = new ArrayList<>();
+			  
+			  for(Rating rating:allRatings) {
+				                             if(rating.getMemberId() == memberId) {
+				                            	 memberRatings.add(rating);
+				                             }
+				  
+			  }
+			  
+			  for(Rating rating:memberRatings) {
+				  memberService.deleteRating(rating);
+			  }
+		}
+		catch(CustomException exception) {
+			System.out.println(exception.getMessage());
 		}
 	}
 	
