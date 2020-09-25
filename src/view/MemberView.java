@@ -13,11 +13,18 @@ import service.MemberService;
 
 public class MemberView {
 
-	MemberService memberService = new MemberService();
+    MemberService memberService = new MemberService();
+   
+	private Member member;
 	
+	public MemberView(Member member) {
+		this.member = member;
+	}
+    
 	public void memberMenu() {
 		
-		listFood();
+		System.out.println(member.getFirstName());
+		System.out.println(member.getEmail());
 		
 	}
 	

@@ -39,7 +39,7 @@ public class WelcomeView {
 		                        			 throw new CustomException(ErrorMessage.ADMIN_DOES_NOT_EXIST.getErrorMessage());
 		                        		 }
 		                        		 else {
-			                                    new AdminView().adminMenu();
+			                                   new AdminView(newAdmin).adminMenu();
 		                        		 }
 		                        	 }catch (CustomException exception) {
 			                     			System.out.println(exception.getMessage());
@@ -61,14 +61,15 @@ public class WelcomeView {
 		                        	              member.setPassword(memberPassword);
 		                        	 
 		                        	              try {
-		                        		          Member newMember = authenticationService.memberLogin(member);
-		                        		          if(newMember == null) {
-		                        			      throw new CustomException(ErrorMessage.MEMBER_CAN_NOT_LOGIN.getErrorMessage());
-		                        		          }
-		                        		          else {
-			                                            new MemberView().memberMenu();
-		                        		                }
-		                        	             }catch (CustomException exception) {
+		                        		               Member newMember = authenticationService.memberLogin(member);
+		                        		               if(newMember == null) {
+		                        			                                  throw new CustomException(ErrorMessage.MEMBER_CAN_NOT_LOGIN.getErrorMessage());
+		                        		                                      }
+		                        		               else {
+			                                                  new MemberView(newMember).memberMenu();
+		                        		                     }
+		                        	             }
+		                        	              catch (CustomException exception) {
 			                     			                                         System.out.println(exception.getMessage());
 		                        	                                                }
 		                        	              
@@ -84,14 +85,14 @@ public class WelcomeView {
 		                                	      try {
 		                                	    	  Member anotherMember = memberService.getMemberByEmail(email);
 		                                	    	  String correctAnswer = anotherMember.getAnswer();
-		                                	    	  System.out.println(correctAnswer);
+		                                	    	  
 		                                	    	  if(answer.equals(correctAnswer)) {
 		                                	    		  System.out.println("Vendosni passwordin e ri: \n");
 		                                	    		  String newPassword = input.next();
 		                                	    		  anotherMember.setPassword(newPassword);
 		                                	    		  memberService.updateMemberPassword(anotherMember);
 		                                	    		  System.out.println("Passwordi juaj u rivendos! ");
-		                                	    		  new MemberView().memberMenu();
+		                                	    		  new MemberView(anotherMember).memberMenu();
 		                                	    	  }
 		                                	    	  
 		                                	    	  else {
@@ -125,7 +126,7 @@ public class WelcomeView {
 		                     			authenticationService.register(newMember);
 		                     			
 		                     			System.out.println("Shtimi juaj u krye me sukses!");
-		                     			new MemberView().memberMenu();
+		                     			new MemberView(newMember).memberMenu();
 		                     		} catch (CustomException exception) {
 		                     			System.out.println(exception.getMessage());
 		                     		} 

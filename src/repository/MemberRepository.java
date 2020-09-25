@@ -207,6 +207,10 @@ public class MemberRepository {
 				member.setMemberId(rs.getInt("member_id"));
 				member.setFirstName(rs.getString("first_name"));
 				member.setLastName(rs.getString("last_name"));
+				member.setEmail(rs.getString("email"));
+				member.setPassword(rs.getString("password"));
+				member.setQuestion(rs.getString("question"));
+				member.setAnswer(rs.getString("answer"));
 				return member;
 			}
 			else {
@@ -225,6 +229,7 @@ public class MemberRepository {
 			ResultSet rs = preparedStatement.executeQuery();
 			Rating rating = new Rating();
 			if(rs.next()) {
+				rating.setRateId(rs.getInt("rate_id"));
 				rating.setRateName(rs.getString("rate_name"));
 				rating.setMemberId(rs.getInt("member_id"));
 				rating.setFoodId(rs.getInt("food_id"));
@@ -251,6 +256,8 @@ public class MemberRepository {
 				member.setLastName(rs.getString("last_name"));
 				member.setQuestion(rs.getString("question"));
 				member.setAnswer(rs.getString("answer"));
+				member.setEmail(rs.getString("email"));
+				member.setPassword(rs.getString("password"));
 				return member;
 			}
 			else {
@@ -270,6 +277,7 @@ public class MemberRepository {
 			Rating rating = new Rating();
 			if(rs.next()) {
 				rating.setRateId(rs.getInt("rate_id"));
+				rating.setRateName(rs.getString("rate_name"));
 				rating.setMemberId(rs.getInt("member_id"));
 				rating.setFoodId(rs.getInt("food_id"));
 				
@@ -292,10 +300,13 @@ public class MemberRepository {
 			ResultSet rs = preparedStatement.executeQuery();
 			Member newMember = new Member();
 			if(rs.next()) {
+				newMember.setMemberId(rs.getInt("member_id"));
+				newMember.setEmail(rs.getString("email"));
+				newMember.setPassword(rs.getString("password"));		
 				newMember.setFirstName(rs.getString("first_name"));
-				newMember.setFirstName(rs.getString("last_name"));
-				newMember.setFirstName(rs.getString("question"));
-				newMember.setFirstName(rs.getString("answer"));
+				newMember.setLastName(rs.getString("last_name"));
+				newMember.setQuestion(rs.getString("question"));
+				newMember.setAnswer(rs.getString("answer"));
 				return newMember;
 			}
 			else {
@@ -316,6 +327,8 @@ public class MemberRepository {
 			Admin newAdmin = new Admin();
 			if(rs.next()) {
 				newAdmin.setAdminId(rs.getInt("admin_id"));
+				newAdmin.setUsername(rs.getString("username"));
+				newAdmin.setPassword(rs.getString("password"));
 				return newAdmin;
 			}
 			else {
@@ -377,6 +390,7 @@ public class MemberRepository {
 			ResultSet rs = preparedStatement.executeQuery();
 			Food food = new Food();
 			if(rs.next()) {
+				food.setFoodId(rs.getInt("food_id"));
 				food.setFoodName(rs.getString("food_name"));
 				food.setFoodPrice(rs.getInt("food_price"));
 				food.setCategoryId(rs.getInt("food_category"));

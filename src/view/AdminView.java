@@ -21,16 +21,22 @@ public class AdminView {
 	MemberService memberService = new MemberService();
 	StaffService staffService = new StaffService();
 	
-	public void adminMenu() {
-		
-		listRatings();
-		deleteRatingByName("Shkelqyeshem");
-		listRatings();
-		
-		
+	private Admin admin;
+	
+	public AdminView(Admin admin) {
+		this.admin = admin;
 	}
 	
-public void listRatings() {
+	public void adminMenu() {
+		
+		System.out.println(admin.getUsername());
+		System.out.println(admin.getAdminId());
+		System.out.println("Zgjidhni opsionin tuaj: \n");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~");
+		
+	                        }
+	
+    public void listRatings() {
 		
 		System.out.println("Lista e ratings: \n");	
 				
@@ -39,8 +45,8 @@ public void listRatings() {
 		for(Rating rating : ratingsList) {
 			System.out.println("Id e rating: " +rating.getRateId()+ ") || Ushqimi: "+memberService.getFoodById(rating.getFoodId()).getFoodName()+ " || Vleresimi: " +rating.getRateName()+ " i bere nga klienti me ID: " +rating.getMemberId()+ " i quajtur" +memberService.getMemberById(rating.getMemberId()).getFirstName()+ " . ");
 				
-	}
-  }
+	     }
+     }
 
 	public void addMember() {
 		System.out.println("Ju lutem jepni te dhenat e anetarit qe doni te shtoni: \n");
