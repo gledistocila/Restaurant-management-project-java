@@ -12,6 +12,7 @@ import model.Category;
 import model.Food;
 import model.Order;
 import model.Rating;
+import model.Table;
 import model.Member;
 import util.ConnectionManager;
 
@@ -28,6 +29,9 @@ public class MemberRepository {
     private final String GET_MEMBER_BY_EMAIL_PASSWORD = "SELECT * FROM member where email = ? and password = ?";
     private final String GET_ADMIN_BY_USERNAME_PASSWORD = "SELECT * FROM admin where username = ? and password = ?";
    
+    private final String GET_TABLE_BY_ID = "SELECT * FROM table where table_id = ?";
+    private final String UPDATE_TABLE_AVAILABILITY = "UPDATE table SET isFree = ? where table_id = ?";
+    private final String GET_ALL_TABLES = "SELECT * FROM table";
     private final String GET_ALL_FOOD = "SELECT * FROM food";
     private final String GET_CATEGORY_BY_ID = "SELECT * FROM category where category_id = ?";
     private final String GET_FOOD_BY_ID = "SELECT * FROM food where food_id = ?";
@@ -41,7 +45,7 @@ public class MemberRepository {
     		
 	public void addMember(Member member) {
 		try (Connection connection = ConnectionManager.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(ADD_MEMBER))
+				PreparedStatement preparedStatement = connection.prepareStatement(ADD_MEMBER);)
 
 		{
 			preparedStatement.setString(1, member.getFirstName());
@@ -60,7 +64,7 @@ public class MemberRepository {
 
 	public void addRating(Rating rating) {
 		try (Connection connection = ConnectionManager.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(ADD_RATING))
+				PreparedStatement preparedStatement = connection.prepareStatement(ADD_RATING);)
 
 		{
 			preparedStatement.setString(1, rating.getRateName());
@@ -120,9 +124,34 @@ public class MemberRepository {
 		}
 	}
 	
+	public List<Table> getAllTables() {
+		List<Table> tables = new ArrayList<>();
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_TABLES);) {
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				Table table = new Table();
+				table.setTableID(rs.getInt("table_id"));
+				table.setTableName(rs.getString("table_name"));
+				table.setRestaurantId(rs.getInt("restaurant_id"));
+				table.setFree(rs.getBoolean("isFree"));
+				
+				tables.add(table);
+			}
+			
+			return tables;
+			
+		} 
+		catch (SQLException e) {
+			System.out.println("error " + e);
+			return null;
+		}
+	}
+	
 	public void updateMember(Member member) {
 		try (Connection connection = ConnectionManager.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER)) {
+				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER);) {
 			preparedStatement.setString(1, member.getFirstName());
 			preparedStatement.setInt(2, member.getMemberId());
 
@@ -132,9 +161,21 @@ public class MemberRepository {
 		}
 	}
 	
+	public void updateTableAvailability(Table table) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TABLE_AVAILABILITY);) {
+			preparedStatement.setBoolean(1, table.isFree());
+			preparedStatement.setInt(2, table.getTableID());
+
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("error " + e);
+		}
+	}
+	
 	public void updateMemberPassword(Member member) {
 		try (Connection connection = ConnectionManager.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER_PASSWORD)) {
+				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEMBER_PASSWORD);) {
 			preparedStatement.setString(1, member.getPassword());
 			preparedStatement.setInt(2, member.getMemberId());
 
@@ -212,6 +253,30 @@ public class MemberRepository {
 				member.setQuestion(rs.getString("question"));
 				member.setAnswer(rs.getString("answer"));
 				return member;
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error! " + e);
+			return null;
+		}
+	}
+	
+	public Table getTableById(Integer tableId) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_TABLE_BY_ID);) {
+			preparedStatement.setInt(1, tableId);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			Table table = new Table();
+			if(rs.next()) {
+				table.setTableID(rs.getInt("table_id"));
+				table.setFree(rs.getBoolean("isFree"));
+				table.setTableName(rs.getString("table_name"));
+				table.setRestaurantId(rs.getInt("restaurant_id"));
+			
+				return table;
 			}
 			else {
 				return null;

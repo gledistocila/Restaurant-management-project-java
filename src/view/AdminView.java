@@ -29,11 +29,10 @@ public class AdminView {
 	
 	public void adminMenu() {
 		
-		System.out.println(admin.getUsername());
-		System.out.println(admin.getAdminId());
-		System.out.println("Zgjidhni opsionin tuaj: \n");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("Mireseerdhet "+admin.getUsername()+ " ! ");
 		
+		System.out.println("Zgjidhni opsionin tuaj: \n");
+				
 	                        }
 	
     public void listRatings() {

@@ -11,6 +11,7 @@ import model.Member;
 import model.Rating;
 import model.Restaurant;
 import model.Staff;
+import model.Table;
 import repository.MemberRepository;
 import util.ErrorMessage;
 
@@ -36,6 +37,10 @@ public class MemberService {
 		return memberRepository.getAllRatings();
 	}
 	
+	public List<Table> getAllTables(){
+		return memberRepository.getAllTables();
+	}
+	
 	public void updateMember(Member member) {
 		if (memberRepository.getMemberById(member.getMemberId()) != null) {
 			memberRepository.updateMember(member);
@@ -49,6 +54,14 @@ public class MemberService {
 			memberRepository.updateMemberPassword(member);
 		} else {
 			throw new CustomException(ErrorMessage.MEMBER_DOES_NOT_EXIST.getErrorMessage());
+		}
+	}
+	
+	public void updateTableAvailability(Table table) {
+		if(memberRepository.getTableById(table.getTableID()) != null) {
+			memberRepository.updateTableAvailability(table);
+		} else {
+			throw new CustomException(ErrorMessage.TABLE_DOES_NOT_EXIST.getErrorMessage());
 		}
 	}
 	
@@ -76,6 +89,16 @@ public class MemberService {
 		else{
 			  return member;
 	        }
+    }
+	
+	public Table getTableById(int tableId) {
+		Table table = memberRepository.getTableById(tableId);
+		if(table == null) {
+			throw new CustomException(ErrorMessage.TABLE_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			return table;
+		}
     }
 	
 	public Food getFoodById(int foodId) {
