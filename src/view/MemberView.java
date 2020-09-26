@@ -10,6 +10,7 @@ import model.Table;
 import model.Food;
 import model.Member;
 import model.Rating;
+import model.Reservation;
 import service.MemberService;
 
 public class MemberView {
@@ -27,7 +28,8 @@ public class MemberView {
 				
 		System.out.println("Mireseerdhet " +member.getFirstName()+ " ! ");
 		
-		System.out.println("1)Menu || 2)Jep porosi || 3)Shiko ratings || 4)Shto nje rating || 5)Rezervo tavoline || 6)Dil");
+		System.out.println("1)Menu || 2)Jep porosi || 3)Shiko ratings || 4)Shto nje rating || 5)Shiko tavolinat || 6)Rezervo tavoline");
+		System.out.println("7)Dil");
 		
 		
 		switch(input.nextInt()) {
@@ -87,12 +89,15 @@ public class MemberView {
 			break;
 		case 5:
 			listTables();
-			updateTableAvailability();
+			this.memberMenu();
 			break;
 		case 6:
+			updateTableAvailability();
+			this.memberMenu();
+			break;
+		case 7:
 			new WelcomeView().welcomeStart();
 			break;
-			
 		default:
 			System.out.println("Zgjedhje e gabuar. \n");
 			this.memberMenu();
@@ -108,8 +113,7 @@ public class MemberView {
 	
 	public void updateTableAvailability() {
 		System.out.println("Ju lutem jepni ID e tavolines qe doni te rezervoni: ");
-		
-		
+
 		try {
 			Table table = new Table();
 			int tableId = input.nextInt();
@@ -118,6 +122,10 @@ public class MemberView {
 				table.setFree(false);
 				
 				memberService.updateTableAvailability(table);
+				Reservation reservation = new Reservation();
+				reservation.setMemberId(this.member.getMemberId());
+				reservation.setTableId(tableId);
+				memberService.addReservation(reservation);
 				System.out.println("Tavolina u rezervua me sukses!");
 
 				this.memberMenu();
@@ -144,6 +152,8 @@ public class MemberView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.memberMenu();
 			
 		}
 		
@@ -222,7 +232,8 @@ public void listRatings() {
     			memberMenu();
     		} catch (CustomException exception) {
     			System.out.println(exception.getMessage());
-    			
+    			System.out.println("\n");
+    			this.memberMenu();
     		} 
     		input.close();
     	}

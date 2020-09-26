@@ -1,13 +1,13 @@
 package model;
 
-import java.time.LocalDate;;
+import java.time.LocalDate;
+import java.util.Date;;
 
 public class Reservation {
        private int reservationId;
        private int memberId;
        private int tableId;
-       private LocalDate reservationDate;
-       
+              
 	public int getReservationId() {
 		return reservationId;
 	}
@@ -26,20 +26,15 @@ public class Reservation {
 	public void setTableId(int tableId) {
 		this.tableId = tableId;
 	}
-	public LocalDate getReservationDate() {
-		return reservationDate;
-	}
-	public void setReservationDate(LocalDate reservationDate) {
-		this.reservationDate = reservationDate;
-	}
-	public Reservation(int reservationId, int memberId, int tableId, LocalDate reservationDate) {
+	
+    public Reservation(int reservationId, int memberId, int tableId) {
 		super();
 		this.reservationId = reservationId;
 		this.memberId = memberId;
 		this.tableId = tableId;
-		this.reservationDate = reservationDate;
-	}
-    public Reservation() {
+		
+    }
+	public Reservation() {
     	
     }
 

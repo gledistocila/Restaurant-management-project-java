@@ -12,6 +12,7 @@ import model.Category;
 import model.Food;
 import model.Order;
 import model.Rating;
+import model.Reservation;
 import model.Table;
 import model.Member;
 import util.ConnectionManager;
@@ -29,12 +30,18 @@ public class MemberRepository {
     private final String GET_MEMBER_BY_EMAIL_PASSWORD = "SELECT * FROM member where email = ? and password = ?";
     private final String GET_ADMIN_BY_USERNAME_PASSWORD = "SELECT * FROM admin where username = ? and password = ?";
    
-    private final String GET_TABLE_BY_ID = "SELECT * FROM table where table_id = ?";
-    private final String UPDATE_TABLE_AVAILABILITY = "UPDATE table SET isFree = ? where table_id = ?";
-    private final String GET_ALL_TABLES = "SELECT * FROM table";
+    private final String GET_TABLE_BY_ID = "SELECT * FROM tablelist where table_id = ?";
+    private final String UPDATE_TABLE_AVAILABILITY = "UPDATE tablelist SET is_free = ? where table_id = ?";
+    private final String GET_ALL_TABLES = "SELECT * FROM tablelist";
+    
     private final String GET_ALL_FOOD = "SELECT * FROM food";
     private final String GET_CATEGORY_BY_ID = "SELECT * FROM category where category_id = ?";
     private final String GET_FOOD_BY_ID = "SELECT * FROM food where food_id = ?";
+    
+    private final String ADD_RESERVATION = "INSERT INTO reservation (member_id , table_id) VALUES (?,?)";
+    private final String GET_RESERVATION_BY_ID = "SELECT * FROM reservation where reservation_id = ?";
+    private final String GET_ALL_RESERVATIONS = "SELECT * FROM reservation";
+    
     private final String ADD_RATING = "INSERT INTO rating (rate_name , member_id , food_id) VALUES (?,?,?)";
     private final String GET_ALL_RATINGS = "SELECT * from rating";
     private final String GET_RATING_BY_ID = "SELECT * from rating where rate_id = ?";
@@ -62,6 +69,21 @@ public class MemberRepository {
 		}
 	}
 
+	public void addReservation(Reservation reservation) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(ADD_RESERVATION);)
+
+		{
+			preparedStatement.setInt(1,  reservation.getMemberId());
+			preparedStatement.setInt(2,  reservation.getTableId());
+			
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("error " + e);
+		}
+	}
+	
 	public void addRating(Rating rating) {
 		try (Connection connection = ConnectionManager.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(ADD_RATING);)
@@ -135,12 +157,36 @@ public class MemberRepository {
 				table.setTableID(rs.getInt("table_id"));
 				table.setTableName(rs.getString("table_name"));
 				table.setRestaurantId(rs.getInt("restaurant_id"));
-				table.setFree(rs.getBoolean("isFree"));
+				table.setFree(rs.getBoolean("is_free"));
 				
 				tables.add(table);
 			}
 			
 			return tables;
+			
+		} 
+		catch (SQLException e) {
+			System.out.println("error " + e);
+			return null;
+		}
+	}
+	
+	public List<Reservation> getAllReservations() {
+		List<Reservation> reservations = new ArrayList<>();
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_RESERVATIONS);) {
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				Reservation reservation = new Reservation();
+				reservation.setReservationId(rs.getInt("reservation_id"));
+				reservation.setMemberId(rs.getInt("member_id"));
+				reservation.setTableId(rs.getInt("table_id"));
+								
+				reservations.add(reservation);
+			}
+			
+			return reservations;
 			
 		} 
 		catch (SQLException e) {
@@ -272,11 +318,34 @@ public class MemberRepository {
 			Table table = new Table();
 			if(rs.next()) {
 				table.setTableID(rs.getInt("table_id"));
-				table.setFree(rs.getBoolean("isFree"));
+				table.setFree(rs.getBoolean("is_free"));
 				table.setTableName(rs.getString("table_name"));
 				table.setRestaurantId(rs.getInt("restaurant_id"));
 			
 				return table;
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error! " + e);
+			return null;
+		}
+	}
+	
+	public Reservation getReservationById(Integer reservationId) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_RESERVATION_BY_ID);) {
+			preparedStatement.setInt(1, reservationId);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			Reservation reservation = new Reservation();
+			if(rs.next()) {
+				reservation.setReservationId(rs.getInt("reservation_id"));
+				reservation.setMemberId(rs.getInt("member_id"));
+				reservation.setTableId(rs.getInt("table_id"));
+			
+				return reservation;
 			}
 			else {
 				return null;

@@ -11,6 +11,7 @@ public enum ErrorMessage {
     RATING_DOES_NOT_EXIST("Rating nuk ekziston. "),
     FOOD_DOES_NOT_EXIST("Ushqimi nuk ekziston. "),
     TABLE_DOES_NOT_EXIST("Tavolina nuk ekziston. "),
+    RESERVATION_DOES_NOT_EXIST("Rezervimi nuk ekziston. "),
 	ADMIN_DOES_NOT_EXIST("Te dhenat e administratorit nuk jane te sakta. ");
 	
 	private String errorMessage;

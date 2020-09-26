@@ -43,6 +43,8 @@ public class WelcomeView {
 		                        		 }
 		                        	 }catch (CustomException exception) {
 			                     			System.out.println(exception.getMessage());
+			                     			System.out.println("\n");
+			                     			welcomeStart();
 		                        	 }
 		                        	 
 			                     break;
@@ -71,6 +73,8 @@ public class WelcomeView {
 		                        	             }
 		                        	              catch (CustomException exception) {
 			                     			                                         System.out.println(exception.getMessage());
+			                     			                                         System.out.println("\n");
+			                     			                                         welcomeStart();
 		                        	                                                }
 		                        	              
 				                         break;
@@ -100,6 +104,7 @@ public class WelcomeView {
 		                                	    	  }
 		                                	      } catch(CustomException exception) {
 		                                	    	  System.out.println(exception.getMessage());
+		                                	    	  System.out.println("\n");
 		                                	      }
 		                                	     
 		                        	 }
@@ -129,11 +134,13 @@ public class WelcomeView {
 		                     			new MemberView(newMember).memberMenu();
 		                     		} catch (CustomException exception) {
 		                     			System.out.println(exception.getMessage());
+		                     			System.out.println("\n");
+		                     			welcomeStart();
 		                     		} 
 		                        break;	 
 		                        default:
 		                        	System.out.println("Keni shtypur numrin e gabuar.Provoni perseri! \n");
-		                        	this.welcomeStart();
+		                        	welcomeStart();
 		                     
 		}
 		input.close();

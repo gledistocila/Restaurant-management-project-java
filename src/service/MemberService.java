@@ -9,6 +9,7 @@ import model.Category;
 import model.Food;
 import model.Member;
 import model.Rating;
+import model.Reservation;
 import model.Restaurant;
 import model.Staff;
 import model.Table;
@@ -25,6 +26,11 @@ public class MemberService {
 	public void addRating(Rating rating) {
 		memberRepository.addRating(rating);
 	}
+	
+	public void addReservation(Reservation reservation) {
+		memberRepository.addReservation(reservation);
+	}
+	
 	public List<Member> getAllMembers(){
 		return memberRepository.getAllMembers();
 	}
@@ -35,6 +41,10 @@ public class MemberService {
 	
 	public List<Rating> getAllRatings(){
 		return memberRepository.getAllRatings();
+	}
+	
+	public List<Reservation> getAllReservations(){
+		return memberRepository.getAllReservations();
 	}
 	
 	public List<Table> getAllTables(){
@@ -98,6 +108,16 @@ public class MemberService {
 		}
 		else{
 			return table;
+		}
+    }
+	
+	public Reservation getReservationById(int reservationId) {
+		Reservation reservation = memberRepository.getReservationById(reservationId);
+		if(reservation == null) {
+			throw new CustomException(ErrorMessage.RESERVATION_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			return reservation;
 		}
     }
 	

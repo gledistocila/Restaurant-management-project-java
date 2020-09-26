@@ -12,6 +12,7 @@ import repository.MemberRepository;
 import model.Admin;
 import model.Member;
 import model.Rating;
+import model.Reservation;
 import service.MemberService;
 import service.StaffService;
 import view.WelcomeView;
@@ -32,10 +33,11 @@ public class AdminView {
 		
 		System.out.println("Mireseerdhet "+admin.getUsername()+ " ! ");
 		
-		System.out.println("1)Shto anetar   || 2)Listo anetaret || 3)Updato anetar || 4)Fshi anetar \n");
-		System.out.println("5)Shto staf     || 6)Listo stafin   || 7)Updato staf   || 8)Fshi staf   \n");
-		System.out.println("9)Shiko ratings || 10)Fshi rating nepermjet ID || 11)Fshi rating nepermjet vleresimit || 12)Fshi rating te nje klienti \n");
-			
+		System.out.println("1)Shto anetar       || 2)Listo anetaret || 3)Updato anetar || 4)Fshi anetar \n");
+		System.out.println("5)Shto staf         || 6)Listo stafin   || 7)Updato staf   || 8)Fshi staf   \n");
+		System.out.println("9)Shiko ratings     || 10)Fshi rating nepermjet ID || 11)Fshi rating nepermjet vleresimit || 12)Fshi rating te nje klienti \n");
+		System.out.println("13)Shiko rezervimet || 14)Dil");
+		
 		switch(input.nextInt()) {
 		case 1:
 			addMember();
@@ -92,6 +94,13 @@ public class AdminView {
 			deleteRatingByMember(memberId);
 			this.adminMenu();
 			break;
+		case 13:
+			listReservations();
+			this.adminMenu();
+			break;
+		case 14:
+			new WelcomeView().welcomeStart();
+			break;
 		default:
 			System.out.println("Zgjedhje e gabuar! ");
 			this.adminMenu();
@@ -108,6 +117,18 @@ public class AdminView {
 		
 		for(Rating rating : ratingsList) {
 			System.out.println("Id e rating: " +rating.getRateId()+ ") || Ushqimi: "+memberService.getFoodById(rating.getFoodId()).getFoodName()+ " || Vleresimi: " +rating.getRateName()+ " i bere nga klienti me ID: " +rating.getMemberId()+ " i quajtur" +memberService.getMemberById(rating.getMemberId()).getFirstName()+ " . ");
+				
+	     }
+     }
+    
+public void listReservations() {
+		
+		System.out.println("Lista e rezervimeve: \n");	
+				
+		List<Reservation> reservationsList = memberService.getAllReservations();
+		
+		for(Reservation reservation : reservationsList) {
+			System.out.println("Id e rezervimit: " +reservation.getReservationId()+ ") || nga klienti: "+memberService.getMemberById(reservation.getMemberId()).getFirstName()+ " || me ID: " +reservation.getMemberId()+ " || per tavolinen me ID: " +reservation.getReservationId()+ " e quajtur " +memberService.getTableById(reservation.getTableId()).getTableName()+ " . ");
 				
 	     }
      }
@@ -137,6 +158,8 @@ public class AdminView {
 			this.adminMenu();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 			
 		} 
      }
@@ -168,6 +191,8 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 			
 		}
 		
@@ -185,6 +210,8 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 			
 		}
 		
@@ -202,6 +229,8 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 		}
 		
 	}
@@ -224,6 +253,8 @@ public class AdminView {
 	 }
 	catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 	 }
 		
 	}
@@ -246,6 +277,8 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 		}
 	}
 	
@@ -270,6 +303,8 @@ public class AdminView {
 			new WelcomeView().welcomeStart();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
+			System.out.println("\n");
+			this.adminMenu();
 			
 		} 
 		
@@ -302,7 +337,8 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
-			
+			System.out.println("\n");
+			this.adminMenu();
 		}
 		
 	}
@@ -319,7 +355,8 @@ public class AdminView {
 		}
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
-			
+			System.out.println("\n");
+			this.adminMenu();
 		}
 	input.close();	
 	}	
