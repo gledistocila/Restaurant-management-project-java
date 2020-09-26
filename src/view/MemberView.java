@@ -24,26 +24,27 @@ public class MemberView {
 	}
     
 	public void memberMenu() {
-		//updateTableAvailability();
-		
-		listTables();
-		
+				
 		System.out.println("Mireseerdhet " +member.getFirstName()+ " ! ");
 		
-		System.out.println("1)Jep porosi || 2)Rezervo tavoline || 3)Shiko ratings || 4)Shto nje rating || 5)Dil");
+		System.out.println("1)Menu || 2)Jep porosi || 3)Shiko ratings || 4)Shto nje rating || 5)Rezervo tavoline || 6)Dil");
 		
 		
 		switch(input.nextInt()) {
 		case 1:
-			placeOrder();
+			listFood();
+			this.memberMenu();
+			break;
 			
 		case 2:
-			listTables();
-			updateTableAvailability();
+			placeOrder();
+			this.memberMenu();
+			break;
 			
 		case 3:
 			listRatings();
 			this.memberMenu();
+			break;
 		
 		case 4:
 			System.out.println("Per cilin ushqim do te shtoni nje rating? \n");
@@ -51,31 +52,51 @@ public class MemberView {
 			switch(input.nextInt()) {
 			case 1:
 				   addRating(member.getMemberId(), 1);
+				   break;
 		    case 2:
 			       addRating(member.getMemberId(), 2);
+			       break;
 		    case 3:
 				addRating(member.getMemberId(), 3);
+				break;
 		    case 4:
 				addRating(member.getMemberId(), 4);
+				break;
 		    case 5:
 				addRating(member.getMemberId(), 5);
+				break;
 		    case 6:
 				addRating(member.getMemberId(), 6);
+				break;
 		    case 7:
 				addRating(member.getMemberId(), 7);
+				break;
 		    case 8:
 				addRating(member.getMemberId(), 8);
+				break;
 		    case 9:
 				addRating(member.getMemberId(), 9);
+				break;
 		    case 10:
 				addRating(member.getMemberId(), 10);
-			}	
+				break;
+			default:
+				System.out.println("Zgjedhje e gabuar! \n");
+				this.memberMenu();
+			}
+			break;
 		case 5:
+			listTables();
+			updateTableAvailability();
+			break;
+		case 6:
 			new WelcomeView().welcomeStart();
+			break;
 			
 		default:
 			System.out.println("Zgjedhje e gabuar. \n");
 			this.memberMenu();
+						
 		}
 		
 		
@@ -107,10 +128,16 @@ public class MemberView {
 				switch(input.nextInt()) {
 				case 1:
 					updateTableAvailability();
+					break;
 				case 2:
 					this.memberMenu();
+					break;
 				case 3:	
 					new WelcomeView().welcomeStart();
+					break;
+				default:
+					System.out.println("Zgjedhje e gabuar! \n");
+					this.memberMenu();
 				}
 			}
 			
@@ -175,12 +202,18 @@ public void listRatings() {
     			switch(input.nextInt()) {
     			                       case 1:
     				                             rating.setRateName("Shkelqyeshem");
+    				                             break;
     			                       case 2:
     			                    	         rating.setRateName("Shume mire");
+    			                    	         break;
     			                       case 3:
     			                    	         rating.setRateName("Mire");
+    			                    	         break;
     			                       case 4:
     			                    	         rating.setRateName("Dobet");
+    			                    	         break;
+    			                       default:
+    			                    	   System.out.println("Zgjedhje e gabuar! \n");
     			}
     			
     			memberService.addRating(rating);

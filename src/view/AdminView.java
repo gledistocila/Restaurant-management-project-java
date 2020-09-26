@@ -20,6 +20,7 @@ public class AdminView {
 
 	MemberService memberService = new MemberService();
 	StaffService staffService = new StaffService();
+	Scanner input = new Scanner(System.in);
 	
 	private Admin admin;
 	
@@ -31,8 +32,72 @@ public class AdminView {
 		
 		System.out.println("Mireseerdhet "+admin.getUsername()+ " ! ");
 		
-		System.out.println("Zgjidhni opsionin tuaj: \n");
-				
+		System.out.println("1)Shto anetar   || 2)Listo anetaret || 3)Updato anetar || 4)Fshi anetar \n");
+		System.out.println("5)Shto staf     || 6)Listo stafin   || 7)Updato staf   || 8)Fshi staf   \n");
+		System.out.println("9)Shiko ratings || 10)Fshi rating nepermjet ID || 11)Fshi rating nepermjet vleresimit || 12)Fshi rating te nje klienti \n");
+			
+		switch(input.nextInt()) {
+		case 1:
+			addMember();
+			this.adminMenu();
+			break;
+		case 2:
+			listMembers();
+			this.adminMenu();
+			break;
+		case 3:
+			updateMember();
+			this.adminMenu();
+			break;
+		case 4:
+			deleteMember();
+			this.adminMenu();
+			break;
+		case 5:
+			addStaff();
+			this.adminMenu();
+			break;
+		case 6:
+			listStaff();
+			this.adminMenu();
+			break;
+		case 7:
+			updateStaff();
+			this.adminMenu();
+			break;
+		case 8:
+			deleteStaff();
+			this.adminMenu();
+			break;
+		case 9:
+			listRatings();
+			this.adminMenu();
+			break;
+		case 10:
+			deleteRating();
+			this.adminMenu();
+			break;
+		case 11:	
+			System.out.println("Shkruani vleresimin te cilin doni ta fshini nga rating: \n");
+			Scanner stringInput = new Scanner(System.in);
+			String rateName = stringInput.next();
+			deleteRatingByName(rateName);
+			stringInput.close();
+			this.adminMenu();
+			break;
+		case 12:
+			System.out.println("Shkruani ID e anetarit te cilit do t'i fshihen te gjithe rating: \n");
+			Scanner newInput = new Scanner(System.in);
+			int memberId = newInput.nextInt();
+			deleteRatingByMember(memberId);
+			this.adminMenu();
+			break;
+		default:
+			System.out.println("Zgjedhje e gabuar! ");
+			this.adminMenu();
+			
+		}
+		
 	                        }
 	
     public void listRatings() {
@@ -49,8 +114,7 @@ public class AdminView {
 
 	public void addMember() {
 		System.out.println("Ju lutem jepni te dhenat e anetarit qe doni te shtoni: \n");
-		Scanner input = new Scanner(System.in);
-		
+				
 		try {
 			Member member = new Member();
 			
@@ -70,14 +134,11 @@ public class AdminView {
 			memberService.addMember(member);
 			
 			System.out.println("Anetari u shtua me sukses!");
-			new WelcomeView().welcomeStart();
+			this.adminMenu();
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
 			
-		} finally {
-			input.close();
-		}
-		
+		} 
      }
 	
 	public void listMembers() {
@@ -94,8 +155,7 @@ public class AdminView {
 	
 	public void updateMember() {
 		System.out.println("Ju lutem jepni ID e anetarit qe doni te updatoni: ");
-		Scanner input = new Scanner(System.in);
-		
+				
 		try {
 			Member member = new Member();
 			member.setMemberId(input.nextInt());
@@ -110,16 +170,12 @@ public class AdminView {
 			System.out.println(exception.getMessage());
 			
 		}
-		finally {
-			input.close();
-		}
 		
 	}
 	
 	public void deleteMember() {
 		System.out.println("Ju lutem jepni ID e anetarit qe doni te fshini: \n");
-		Scanner input = new Scanner(System.in);
-		
+				
 		try {
 			Member member = new Member();
 			member.setMemberId(input.nextInt());
@@ -131,14 +187,11 @@ public class AdminView {
 			System.out.println(exception.getMessage());
 			
 		}
-		finally {
-			input.close();
-		}
+		
 	}
 	
 	public void deleteRating() {
 		System.out.println("Ju lutem jepni ID e rating qe doni te fshini: \n");
-		Scanner input = new Scanner(System.in);
 		
 		try {
 			Rating rating = new Rating();
@@ -150,9 +203,7 @@ public class AdminView {
 		catch(CustomException exception) {
 			System.out.println(exception.getMessage());
 		}
-		finally {
-			input.close();
-		}
+		
 	}
 	
 	public void deleteRatingByName(String ratingName) {
@@ -200,7 +251,6 @@ public class AdminView {
 	
 	public void addStaff() {
 		System.out.println("Ju lutem jepni te dhenat e punonjesit qe doni te shtoni: \n");
-		Scanner input = new Scanner(System.in);
 		
 		try {
 			Staff staff = new Staff();
@@ -221,21 +271,24 @@ public class AdminView {
 		} catch (CustomException exception) {
 			System.out.println(exception.getMessage());
 			
-		} finally {
-			input.close();
-		}
+		} 
 		
      }
 	
 	public void listStaff() {
 		
 		System.out.println("Listimi i stafit: \n");
+		
+		List<Staff> staffList = staffService.getAllStaff();
+		
+		for(Staff staff : staffList) {
+			System.out.println("Id e stafit: " +staff.getStaffId()+ " || Emri i stafit: " +staff.getFirstName()+ " || Mbiemri i stafit: " +staff.getLastName()+ " || Numri i telefonit: " +staff.getMobileNo()+ " || Adresa: " +staff.getStreetAddress()+ " . ");
+		}
 
 	}
 	
 	public void updateStaff() {
 		System.out.println("Ju lutem jepni ID e punonjesit qe doni te updatoni: ");
-		Scanner input = new Scanner(System.in);
 		
 		try {
 			Staff staff = new Staff();
@@ -251,14 +304,11 @@ public class AdminView {
 			System.out.println(exception.getMessage());
 			
 		}
-		finally {
-			input.close();
-		}
+		
 	}
 	
 	public void deleteStaff() {
 		System.out.println("Ju lutem jepni ID e punonjesit qe doni te fshini: ");
-		Scanner input = new Scanner(System.in);
 		
 		try {
 			Staff staff = new Staff();
@@ -271,8 +321,7 @@ public class AdminView {
 			System.out.println(exception.getMessage());
 			
 		}
-		finally {
-			input.close();
-		}
+	input.close();	
 	}	
+	
 }
