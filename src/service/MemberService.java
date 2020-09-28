@@ -8,6 +8,7 @@ import model.Admin;
 import model.Category;
 import model.Food;
 import model.Member;
+import model.Order;
 import model.Rating;
 import model.Reservation;
 import model.Restaurant;
@@ -21,6 +22,10 @@ public class MemberService {
 
 	public void addMember(Member member) {
 		memberRepository.addMember(member);
+	}
+	
+	public void addOrder(Order order) {
+		memberRepository.addOrder(order);
 	}
 
 	public void addRating(Rating rating) {
@@ -51,6 +56,10 @@ public class MemberService {
 		return memberRepository.getAllTables();
 	}
 	
+	public List<Order> getAllOrders(){
+		return memberRepository.getAllOrders();
+	}
+	
 	public void updateMember(Member member) {
 		if (memberRepository.getMemberById(member.getMemberId()) != null) {
 			memberRepository.updateMember(member);
@@ -72,6 +81,14 @@ public class MemberService {
 			memberRepository.updateTableAvailability(table);
 		} else {
 			throw new CustomException(ErrorMessage.TABLE_DOES_NOT_EXIST.getErrorMessage());
+		}
+	}
+	
+	public void updateFoodAvailability(Food food) {
+		if(memberRepository.getFoodById(food.getFoodId()) != null) {
+			memberRepository.updateFoodAvailability(food);
+		} else {
+			throw new CustomException(ErrorMessage.FOOD_DOES_NOT_EXIST.getErrorMessage());
 		}
 	}
 	
@@ -98,6 +115,26 @@ public class MemberService {
 		}
 		else{
 			  return member;
+	        }
+    }
+	
+	public Order getOrderById(int orderId) {
+		Order order = memberRepository.getOrderById(orderId);
+		if(order == null) {
+			throw new CustomException(ErrorMessage.ORDER_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			  return order;
+	        }
+    }
+	
+	public Order getOrderByMemberId(int memberId) {
+		Order order = memberRepository.getOrderByMemberId(memberId);
+		if(order == null) {
+			throw new CustomException(ErrorMessage.ORDER_DOES_NOT_EXIST.getErrorMessage());
+		}
+		else{
+			  return order;
 	        }
     }
 	

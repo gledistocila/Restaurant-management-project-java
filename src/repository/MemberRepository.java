@@ -38,6 +38,12 @@ public class MemberRepository {
     private final String GET_CATEGORY_BY_ID = "SELECT * FROM category where category_id = ?";
     private final String GET_FOOD_BY_ID = "SELECT * FROM food where food_id = ?";
     
+    private final String ADD_ORDER = "INSERT INTO orderlist (total , member_id , staff_id) VALUES (?,?,?)";
+    private final String GET_ORDER_BY_ID = "SELECT * FROM orderlist where order_id = ?";
+    private final String GET_ORDER_BY_MEMBERID = "SELECT * FROM orderlist where member_id = ?";
+    private final String GET_ALL_ORDERS = "SELECT * FROM orderlist";
+    private final String UPDATE_FOOD_AVAILABILITY = " UPDATE food SET food_quantity = ? where food_id = ?";
+    
     private final String ADD_RESERVATION = "INSERT INTO reservation (member_id , table_id) VALUES (?,?)";
     private final String GET_RESERVATION_BY_ID = "SELECT * FROM reservation where reservation_id = ?";
     private final String GET_ALL_RESERVATIONS = "SELECT * FROM reservation";
@@ -62,6 +68,22 @@ public class MemberRepository {
 			preparedStatement.setString(5,  member.getQuestion());
 			preparedStatement.setString(6,  member.getAnswer());
 		
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			System.out.println("error " + e);
+		}
+	}
+	
+	public void addOrder(Order order) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(ADD_ORDER);)
+
+		{
+			preparedStatement.setInt(1, order.getTotal());
+			preparedStatement.setInt(2, order.getMemberId());
+			preparedStatement.setInt(3, order.getStaffId());
+						
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
@@ -146,6 +168,28 @@ public class MemberRepository {
 		}
 	}
 	
+	public List<Order> getAllOrders() {
+		List<Order> orders = new ArrayList<>();
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_ORDERS);) {
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				Order order = new Order();
+				order.setOrderId(rs.getInt("order_id"));
+				order.setMemberId(rs.getInt("member_id"));
+				order.setStaffId(rs.getInt("staff_id"));
+				order.setTotal(rs.getInt("total"));
+				
+				orders.add(order);
+			}
+			return orders;
+		} catch (SQLException e) {
+			System.out.println("error " + e);
+			return null;
+		}
+	}
+	
 	public List<Table> getAllTables() {
 		List<Table> tables = new ArrayList<>();
 		try (Connection connection = ConnectionManager.getConnection();
@@ -212,6 +256,19 @@ public class MemberRepository {
 				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_TABLE_AVAILABILITY);) {
 			preparedStatement.setBoolean(1, table.isFree());
 			preparedStatement.setInt(2, table.getTableID());
+
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("error " + e);
+		}
+	}
+	
+	public void updateFoodAvailability(Food food) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_FOOD_AVAILABILITY);) {
+			
+			preparedStatement.setInt(1, food.getFoodQuantity());
+			preparedStatement.setInt(2, food.getFoodId());
 
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
@@ -323,6 +380,54 @@ public class MemberRepository {
 				table.setRestaurantId(rs.getInt("restaurant_id"));
 			
 				return table;
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error! " + e);
+			return null;
+		}
+	}
+	
+	public Order getOrderById(Integer orderId) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_ORDER_BY_ID);) {
+			preparedStatement.setInt(1, orderId);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			Order order = new Order();
+			if(rs.next()) {
+				order.setOrderId(rs.getInt("order_id"));
+				order.setMemberId(rs.getInt("member_id"));
+				order.setStaffId(rs.getInt("staff_id"));
+				order.setTotal(rs.getInt("total"));
+			
+				return order;
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error! " + e);
+			return null;
+		}
+	}
+	
+	public Order getOrderByMemberId(Integer memberId) {
+		try (Connection connection = ConnectionManager.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(GET_ORDER_BY_MEMBERID);) {
+			preparedStatement.setInt(1, memberId);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			Order order = new Order();
+			if(rs.next()) {
+				order.setOrderId(rs.getInt("order_id"));
+				order.setMemberId(rs.getInt("member_id"));
+				order.setStaffId(rs.getInt("staff_id"));
+				order.setTotal(rs.getInt("total"));
+			
+				return order;
 			}
 			else {
 				return null;

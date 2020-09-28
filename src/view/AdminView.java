@@ -11,6 +11,7 @@ import model.Staff;
 import repository.MemberRepository;
 import model.Admin;
 import model.Member;
+import model.Order;
 import model.Rating;
 import model.Reservation;
 import service.MemberService;
@@ -33,10 +34,10 @@ public class AdminView {
 		
 		System.out.println("Mireseerdhet "+admin.getUsername()+ " ! ");
 		
-		System.out.println("1)Shto anetar       || 2)Listo anetaret || 3)Updato anetar || 4)Fshi anetar \n");
-		System.out.println("5)Shto staf         || 6)Listo stafin   || 7)Updato staf   || 8)Fshi staf   \n");
-		System.out.println("9)Shiko ratings     || 10)Fshi rating nepermjet ID || 11)Fshi rating nepermjet vleresimit || 12)Fshi rating te nje klienti \n");
-		System.out.println("13)Shiko rezervimet || 14)Dil");
+		System.out.println("1)Shto anetar       || 2)Listo anetaret  || 3)Updato anetar || 4)Fshi anetar \n");
+		System.out.println("5)Shto staf         || 6)Listo stafin    || 7)Updato staf   || 8)Fshi staf   \n");
+		System.out.println("9)Shiko ratings     || 10)Fshi rating nepermjet ID          || 11)Fshi rating nepermjet vleresimit || 12)Fshi rating te nje klienti \n");
+		System.out.println("13)Shiko rezervimet || 14)Shiko porosite || 15)Dil \n");
 		
 		switch(input.nextInt()) {
 		case 1:
@@ -99,6 +100,10 @@ public class AdminView {
 			this.adminMenu();
 			break;
 		case 14:
+			listOrders();
+			this.adminMenu();
+			break;
+		case 15:
 			new WelcomeView().welcomeStart();
 			break;
 		default:
@@ -118,6 +123,17 @@ public class AdminView {
 		for(Rating rating : ratingsList) {
 			System.out.println("Id e rating: " +rating.getRateId()+ ") || Ushqimi: "+memberService.getFoodById(rating.getFoodId()).getFoodName()+ " || Vleresimi: " +rating.getRateName()+ " i bere nga klienti me ID: " +rating.getMemberId()+ " i quajtur" +memberService.getMemberById(rating.getMemberId()).getFirstName()+ " . ");
 				
+	     }
+     }
+    
+public void listOrders() {
+		
+		System.out.println("Lista e porosive: \n");	
+				
+		List<Order> ordersList = memberService.getAllOrders();
+		
+		for(Order order : ordersList) {
+			System.out.println("Id e porosise: " +order.getOrderId()+" e bere nga klienti me ID: "+order.getMemberId()+" e kryer nga anetari i stafit me ID: "+order.getStaffId()+ " me total: "+order.getTotal()+ " leke. ");
 	     }
      }
     
